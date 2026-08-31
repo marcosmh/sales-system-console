@@ -2,6 +2,7 @@ package com.mark.microsystem.sales.system;
 
 import com.mark.microsystem.sales.system.main.controller.LoginConsole;
 
+import com.mark.microsystem.sales.system.main.utils.ConsoleColors;
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 
@@ -22,21 +23,28 @@ public class SalesSystemApplication {
 
 		clearScreen();
 
+		ConsoleColors colors = new ConsoleColors();
+
 		return args -> {
 
 		TextIO textIO = TextIoFactory.getTextIO();
-		textIO.getTextTerminal().println("=== SISTEMA DE VENTAS ===");
-
+		textIO.getTextTerminal().println(colors.cyan("=== SALES SYSTEM ==="));
 
 		int opcion = textIO.newIntInputReader()
 				.withMinVal(1)
 				.withMaxVal(5)
-				.read("Seleccione una opción:\n1. Login\n2. Registrar Venta\n3. Inventarios\n4. Corte de Caja\n5. Salir");
+				.read(colors.yellow("Select an option:\n")
+						+ colors.green("1. Login\n")
+						+ colors.blue("2. Register Sale\n")
+						+ colors.purple("3. Inventories\n")
+						+ colors.cyan("4. Box Cut\n")
+						+ colors.red("5. Exit"));
 
-		switch(opcion) {
+
+			switch(opcion) {
 			case 1: // Login
 				var user = loginConsole.login();
-				textIO.getTextTerminal().println("Welcome " + user.getUsername() + " with rol " + user.getRole());
+				textIO.getTextTerminal().println(colors.green( "Welcome " + user.getUsername() + " with rol " + user.getRole()));
 				break;
 			case 2: // Ventas
 				break;
@@ -44,7 +52,13 @@ public class SalesSystemApplication {
 				break;
 			case 4: // Corte de Caja
 				break;
-			case 5: System.exit(0);
+			case 5:
+				textIO.getTextTerminal().println(colors.green("Leaving the system..."));
+				System.exit(0);
+				break;
+			default:
+				textIO.getTextTerminal().println(colors.red("Invalid option."));
+
 		}
 
 
