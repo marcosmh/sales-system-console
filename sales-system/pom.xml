@@ -55,6 +55,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.beryx</groupId>
+			<artifactId>text-io</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.williamcallahan</groupId>
 			<artifactId>tui4j</artifactId>
 			<version>0.3.3</version>

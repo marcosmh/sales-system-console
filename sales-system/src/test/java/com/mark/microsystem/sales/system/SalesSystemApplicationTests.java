@@ -1,4 +1,4 @@
-package com.mark.microsystem.sales_system;
+package com.mark.microsystem.sales.system;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
