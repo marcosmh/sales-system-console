@@ -19,6 +19,7 @@ public class MainMenu {
         this.consoleUtils = consoleUtils;
     }
 
+
     public void showMenu(UserPerson user, TextIO textIO) {
         while (true) {
             consoleUtils.clearScreen();

@@ -24,26 +24,25 @@ public class SalesSystemApplication {
 	@Bean
 	CommandLineRunner runMenu(LoginConsole loginConsole) {
 
-		ConsoleColors colors = new ConsoleColors();
-		ConsoleUtils consoleUtils = new ConsoleUtils(colors);
-		TextIO textIO = TextIoFactory.getTextIO();
-		consoleUtils.clearScreen();
-
 		return args -> {
+
+			ConsoleColors colors = new ConsoleColors();
+			ConsoleUtils consoleUtils = new ConsoleUtils(colors);
+			TextIO textIO = TextIoFactory.getTextIO();
+			consoleUtils.clearScreen();
 
 			UserPerson user;
 			try {
 				user = loginConsole.login();
 				consoleUtils.clearScreen();
 			} catch (RuntimeException e) {
-				textIO.getTextTerminal().println("\u001B[31mInvalid credentials. Exiting...\u001B[0m");
+				textIO.getTextTerminal().println(colors.red("Invalid credentials. Exiting..."));
 				System.exit(1);
 				return;
 			}
 
 			textIO.getTextTerminal().println(
-					"\u001B[32mWelcome " + user.getUsername() + " with role " + user.getRole() + "\u001B[0m"
-			);
+					colors.green("Welcome " + user.getUsername() + " with role " + user.getRole()));
 
 			MainMenu mainMenu = new MainMenu(loginConsole, colors, consoleUtils);
 			mainMenu.showMenu(user, textIO);
