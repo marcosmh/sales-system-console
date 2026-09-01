@@ -34,6 +34,7 @@ public class SalesSystemApplication {
 
 		try {
 			user = loginConsole.login();
+			consoleUtils.clearScreen();
 		} catch (RuntimeException e) {
 			textIO.getTextTerminal().println("\u001B[31mInvalid credentials. Exiting...\u001B[0m");
 			System.exit(1);
@@ -53,6 +54,7 @@ public class SalesSystemApplication {
 				System.exit(0);
 			}
 
+			consoleUtils.clearScreen();
 			textIO.getTextTerminal().println(colors.cyan("=== SALES SYSTEM ==="));
 
 			int opcion = textIO.newIntInputReader()
@@ -79,6 +81,7 @@ public class SalesSystemApplication {
 					break;
 				case 5:
 					textIO.getTextTerminal().println(colors.green("Leaving the system..."));
+					consoleUtils.clearScreen();
 					System.exit(0);
 					break;
 				default:
