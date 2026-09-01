@@ -57,36 +57,10 @@ public class SalesSystemApplication {
 			consoleUtils.clearScreen();
 			textIO.getTextTerminal().println(colors.cyan("=== SALES SYSTEM ==="));
 
-			int opcion = textIO.newIntInputReader()
-					.withMinVal(1)
-					.withMaxVal(5)
-					.read(colors.yellow("Select an option:\n")
-							+ colors.green("1. Login\n")
-							+ colors.blue("2. Register Sale\n")
-							+ colors.purple("3. Inventories\n")
-							+ colors.cyan("4. Box Cut\n")
-							+ colors.red("5. Exit"));
-
-
-			switch(opcion) {
-				case 1: // Login
-					user = loginConsole.login();
-					textIO.getTextTerminal().println(colors.green( "Welcome " + user.getUsername() + " with rol " + user.getRole()));
-					break;
-				case 2: // Ventas
-					break;
-				case 3: // Inventarios
-					break;
-				case 4: // Corte de Caja
-					break;
-				case 5:
-					textIO.getTextTerminal().println(colors.green("Leaving the system..."));
-					consoleUtils.clearScreen();
-					System.exit(0);
-					break;
-				default:
-					textIO.getTextTerminal().println(colors.red("Invalid option."));
-
+			if(user.getRole().equalsIgnoreCase("ADMIN")) {
+				showAdminMenu(loginConsole, textIO, colors, consoleUtils);
+			} else {
+				showSellerMenu(textIO, colors, consoleUtils);
 			}
 
 		}
@@ -95,5 +69,78 @@ public class SalesSystemApplication {
 
 
 	}
+
+	private static void showAdminMenu(LoginConsole loginConsole, TextIO textIO, ConsoleColors colors, ConsoleUtils consoleUtils) {
+		UserPerson user;
+		int opcion = textIO.newIntInputReader()
+				.withMinVal(1)
+				.withMaxVal(7)
+				.read(colors.yellow("Select an option:\n")
+						+ colors.green("1. Users\n")
+						+ colors.blue("2. Inventory\n")
+						+ colors.purple("3. Sales\n")
+						+ colors.cyan("4. Cash Reconciliation\n")
+						+ colors.cyan("5. Suppliers\n")
+						+ colors.cyan("6. Invoices\n")
+						+ colors.red("7. Exit"));
+
+
+		switch(opcion) {
+			case 1: // Users
+				// user = loginConsole.login();
+				// textIO.getTextTerminal().println(colors.green( "Welcome " + user.getUsername() + " with rol " + user.getRole()));
+				break;
+			case 2: // Inventory
+				break;
+			case 3: // Sales
+				break;
+			case 4: // Cash Reconciliation
+				break;
+			case 5: // Suppliers
+				break;
+			case 6: // Invoices
+				break;
+			case 7:
+				// textIO.getTextTerminal().println(colors.green("Leaving the system..."));
+				consoleUtils.clearScreen();
+				System.exit(0);
+				break;
+			default:
+				textIO.getTextTerminal().println(colors.red("Invalid option."));
+
+		}
+	}
+
+	private static void showSellerMenu(TextIO textIO, ConsoleColors colors, ConsoleUtils consoleUtils) {
+		UserPerson user;
+		int opcion = textIO.newIntInputReader()
+				.withMinVal(1)
+				.withMaxVal(4)
+				.read(colors.yellow("Select an option:\n")
+						+ colors.green("1. Inventory\n")
+						+ colors.blue("2. Sales\n")
+						+ colors.purple("3. Invoices\n")
+						+ colors.red("4. Exit"));
+
+
+		switch(opcion) {
+			case 1: // Inventory
+				break;
+			case 2: // Sales
+				break;
+			case 3: // Invoices
+				break;
+			case 4:
+				// textIO.getTextTerminal().println(colors.green("Exit the seller menu..."));
+				consoleUtils.clearScreen();
+				System.exit(0);
+				break;
+			default:
+				textIO.getTextTerminal().println(colors.red("Invalid option."));
+
+		}
+	}
+
+
 
 }
