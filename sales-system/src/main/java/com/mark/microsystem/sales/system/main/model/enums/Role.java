@@ -1,4 +1,4 @@
-package com.mark.microsystem.sales.system.main.model;
+package com.mark.microsystem.sales.system.main.model.enums;
 
 public enum Role {
 
