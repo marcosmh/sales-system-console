@@ -19,5 +19,7 @@ public interface IUserService {
 
     UserResponse getUserById(Integer id);
 
+    UserResponse getUserByName(String username);
+
 
 }

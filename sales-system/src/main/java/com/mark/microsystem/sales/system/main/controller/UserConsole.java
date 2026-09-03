@@ -160,28 +160,35 @@ public class UserConsole {
     private void updateUser(TextIO textIO) {
         System.out.print(colors.blue("\n Update User \n"));
 
-        Integer id = textIO.newIntInputReader()
-                .withMinVal(1)
-                .read("User Id: ");
+        String existUsername = textIO.newStringInputReader()
+                .withValueChecker( (value, item) -> {
+                    System.out.println("Username: "+  " value: " + value);
+                    if ( value == null || value.isBlank() ) {
+                        throw new IllegalArgumentException(colors.orange("Username cannot by empty"));
+                    }
+                    return Collections.emptyList();
+                })
+                .read("Username: ");
 
         try {
-            UserResponse currentUser = userService.getUserById(id);
+            UserResponse currentUser = userService.getUserByName(existUsername);
+
             System.out.println( colors.yellow("\nCurrent user:") ); printUser(currentUser);
 
             String name = textIO.newStringInputReader() .read( "Name [" + currentUser.name() + "]: " );
+
             String username = textIO.newStringInputReader() .read( "Username [" + currentUser.username() + "]: " );
+
             String role = textIO.newStringInputReader() .withPossibleValues("ADMIN", "SELLER") .read( "Role [" + currentUser.role() + "]: " );
             Boolean active = textIO.newBooleanInputReader() .read( "Active [" + currentUser.active() + "]: " );
-            if (name.isBlank()) {
-                name = currentUser.name();
-            }
-            if (username.isBlank()) {
-                username = currentUser.username();
+
+            if(currentUser.username().equalsIgnoreCase(username)) {
+                throw new IllegalArgumentException(colors.orange("Username already exists."));
             }
 
             UserUpdateRequest request = new UserUpdateRequest( name, username, role, active );
 
-            UserResponse updatedUser = userService.updateUser(id, request);
+            UserResponse updatedUser = userService.updateUser(currentUser.id(), request);
 
             System.out.println( colors.green( "\nUser updated successfully!" ) );
 
@@ -200,13 +207,21 @@ public class UserConsole {
     private void deleteUser(TextIO textIO) {
         System.out.print(colors.blue("\n Delete User \n"));
 
-        Integer id = textIO.newIntInputReader() .withMinVal(1) .read("User ID: ");
+        // Integer id = textIO.newIntInputReader() .withMinVal(1) .read("User ID: ");
+
+        String existUsername = textIO.newStringInputReader()
+                .read("Username: ");
 
         try {
 
-            UserResponse user = userService.getUserById(id);
+            // UserResponse user = userService.getUserById(id);
+            UserResponse user = userService.getUserByName(existUsername);
             System.out.println( colors.yellow("\nUser to delete:") );
             printUser(user);
+
+            if( !existUsername.equalsIgnoreCase(user.username())) {
+                throw new IllegalArgumentException(colors.orange("Username not exists."));
+            }
 
             boolean confirm = textIO.newBooleanInputReader().read( colors.red( "Are you sure you want to delete this user?" ) );
 
@@ -215,7 +230,7 @@ public class UserConsole {
                 return;
             }
 
-            userService.deleteUser(id);
+            userService.deleteUser(user.id());
             System.out.println( colors.green( "\nUser deleted successfully!" ) );
             consoleUtils.pause(textIO);
 

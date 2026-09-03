@@ -96,6 +96,15 @@ public class UserService implements IUserService {
         return toResponseUser(user);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public UserResponse getUserByName(String username) {
+        UserPerson user = userRepository.findByUsername(username)
+                .orElseThrow( () ->
+                        new ResourceNotFoundException("User not found."));
+        return toResponseUser(user);
+    }
+
 
     private UserResponse toResponseUser(UserPerson user) {
 
