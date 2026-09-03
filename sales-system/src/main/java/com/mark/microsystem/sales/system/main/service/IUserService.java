@@ -1,18 +1,23 @@
 package com.mark.microsystem.sales.system.main.service;
 
+import com.mark.microsystem.sales.system.main.model.dto.UserCreateRequest;
+import com.mark.microsystem.sales.system.main.model.dto.UserResponse;
+import com.mark.microsystem.sales.system.main.model.dto.UserUpdateRequest;
 import com.mark.microsystem.sales.system.main.model.entity.UserPerson;
 
 import java.util.List;
 
 public interface IUserService {
 
-    UserPerson createUser(String username, String password, String role);
+    UserResponse createUser(UserCreateRequest userRequest);
 
-    UserPerson updateUser(Integer id, String newUsername, String newRole);
+    UserResponse updateUser(Integer id, UserUpdateRequest userRequest);
 
     void deleteUser(Integer id);
 
-    List<UserPerson> listUsers();
+    List<UserResponse> listUsers();
+
+    UserResponse getUserById(Integer id);
 
 
 }

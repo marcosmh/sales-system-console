@@ -32,10 +32,10 @@ public class UserPerson {
     private String passwordHash;
 
     @Column(name = "role", nullable = false)
-    private String role; // ADMIN o VENDEDOR SELLER
+    private String role; // ADMIN o SELLER
 
     @Column(name = "active")
-    private Boolean active = true;
+    private Boolean active;
 
     @Column(name ="created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
