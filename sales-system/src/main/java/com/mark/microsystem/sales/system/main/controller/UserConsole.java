@@ -78,7 +78,7 @@ public class UserConsole {
                     }
                     return Collections.emptyList();
                 })
-                .read("User Name: ");
+                .read("Username: ");
 
 
         String password = textIO.newStringInputReader()
@@ -207,14 +207,11 @@ public class UserConsole {
     private void deleteUser(TextIO textIO) {
         System.out.print(colors.blue("\n Delete User \n"));
 
-        // Integer id = textIO.newIntInputReader() .withMinVal(1) .read("User ID: ");
-
         String existUsername = textIO.newStringInputReader()
                 .read("Username: ");
 
         try {
 
-            // UserResponse user = userService.getUserById(id);
             UserResponse user = userService.getUserByName(existUsername);
             System.out.println( colors.yellow("\nUser to delete:") );
             printUser(user);
