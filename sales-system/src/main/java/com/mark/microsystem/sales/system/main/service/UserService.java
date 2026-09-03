@@ -1,16 +1,19 @@
 package com.mark.microsystem.sales.system.main.service;
 
+import com.mark.microsystem.sales.system.main.exception.ResourceNotFoundException;
 import com.mark.microsystem.sales.system.main.model.dto.UserCreateRequest;
 import com.mark.microsystem.sales.system.main.model.dto.UserResponse;
 import com.mark.microsystem.sales.system.main.model.dto.UserUpdateRequest;
 import com.mark.microsystem.sales.system.main.model.entity.UserPerson;
 import com.mark.microsystem.sales.system.main.repository.UserPersonRepository;
+
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -26,7 +29,7 @@ public class UserService implements IUserService {
     public UserResponse createUser(UserCreateRequest userRequest) {
 
         if(userRepository.existsByUsername(userRequest.username())) {
-            throw new RuntimeException("Username already exists");
+            throw new ResourceNotFoundException("Username already exists");
         }
 
         UserPerson user = UserPerson.builder()
@@ -45,10 +48,10 @@ public class UserService implements IUserService {
     public UserResponse updateUser(Integer id, UserUpdateRequest userRequest) {
 
         UserPerson user = userRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("User not found."));
+                .orElseThrow(()-> new ResourceNotFoundException("User not found."));
 
         if( userRepository.existsByUsername(userRequest.username()) ) {
-            throw new RuntimeException("Username already exists.");
+            throw new ResourceNotFoundException("Username already exists.");
         }
 
         user.setName(userRequest.name());
@@ -68,7 +71,7 @@ public class UserService implements IUserService {
     public void deleteUser(Integer id) {
 
         if( !userRepository.existsById(id) ) {
-            throw new RuntimeException("User not found.");
+            throw new ResourceNotFoundException("User not found.");
         }
         userRepository.deleteById(id);
     }
@@ -87,7 +90,8 @@ public class UserService implements IUserService {
     @Transactional(readOnly = true)
     public UserResponse getUserById(Integer id) {
         UserPerson user = userRepository.findById(id)
-                .orElseThrow( () -> new RuntimeException("User not found."));
+                .orElseThrow( () ->
+                        new ResourceNotFoundException("User not found.") );
         return toResponseUser(user);
     }
 
@@ -105,5 +109,5 @@ public class UserService implements IUserService {
         );
     }
 
-    
+
 }
