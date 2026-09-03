@@ -8,6 +8,8 @@ import com.mark.microsystem.sales.system.main.utils.ConsoleColors;
 import com.mark.microsystem.sales.system.main.utils.ConsoleUtils;
 
 import lombok.RequiredArgsConstructor;
+
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -94,8 +96,10 @@ public class UserConsole {
             UserResponse user = userService.createUser(userRequest);
             System.out.println(colors.green("\n User created successfully") );
             printUser(user);
+            consoleUtils.pause(textIO);
         } catch (Exception e) {
             System.out.println( colors.red("\n Error creating user: " +  e.getMessage()) );
+            consoleUtils.pause(textIO);
         }
 
 
@@ -222,6 +226,8 @@ public class UserConsole {
     private void printUserRow(UserResponse user) {
         System.out.printf("%-5s %-25s %-20s %-10s %-10s%n", user.id(), user.name(), user.username(), user.role(), user.active());
     }
+
+
 
 
 }
