@@ -23,6 +23,9 @@ public class Product {
     @Column(name = "id_product")
     private Integer id;
 
+    @Column(name = "name", nullable = false, length = 100)
+    private String name;
+
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
