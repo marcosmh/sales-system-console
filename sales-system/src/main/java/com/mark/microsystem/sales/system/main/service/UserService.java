@@ -33,6 +33,7 @@ public class UserService implements IUserService {
         }
 
         UserPerson user = UserPerson.builder()
+                .name(userRequest.name())
                 .username(userRequest.username())
                 .passwordHash(passwordEncoder.encode(userRequest.password()))
                 .role(userRequest.role())

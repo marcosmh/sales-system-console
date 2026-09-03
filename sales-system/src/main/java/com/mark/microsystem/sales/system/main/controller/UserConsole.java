@@ -9,17 +9,20 @@ import com.mark.microsystem.sales.system.main.utils.ConsoleUtils;
 
 import lombok.RequiredArgsConstructor;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
 
 @Component
 @RequiredArgsConstructor
 public class UserConsole {
+
+    private final PasswordEncoder passwordEncoder;
 
     private final IUserService userService;
     private final ConsoleColors colors = new ConsoleColors();
@@ -55,11 +58,12 @@ public class UserConsole {
 
     private void createUser(TextIO textIO) {
 
-        System.out.print(colors.blue("\n Create User"));
+        System.out.print(colors.blue("\n Create User \n"));
 
         String name = textIO.newStringInputReader()
                 .withValueChecker( (value, item) -> {
-                    if ( value == null && value.isBlank() ) {
+                    System.out.println("Name: "+  " value: " + value);
+                    if ( value == null || value.isBlank() ) {
                         throw new IllegalArgumentException("Name cannot by empty");
                     }
                     return Collections.emptyList();
@@ -68,7 +72,8 @@ public class UserConsole {
 
         String username = textIO.newStringInputReader()
                 .withValueChecker( (value, item) -> {
-                    if ( value == null && value.isBlank() ) {
+                    System.out.println("Username: "+  " value: " + value);
+                    if ( value == null || value.isBlank() ) {
                         throw new IllegalArgumentException("Username cannot by empty");
                     }
                     return Collections.emptyList();
@@ -78,19 +83,22 @@ public class UserConsole {
 
         String password = textIO.newStringInputReader()
                 .withValueChecker( (value, item) -> {
-                    if ( value == null && value.isBlank() ) {
+                    if ( value == null || value.isBlank() ) {
                         throw new IllegalArgumentException("Password cannot by empty");
                     }
                     return Collections.emptyList();
                 })
-                .read("Password");
+                .read("Password: ");
 
 
         String role = textIO.newStringInputReader()
                 .withPossibleValues("ADMIN","SELLER")
-                .read("Role");
+                .read("Role: ");
 
-        UserCreateRequest userRequest = new UserCreateRequest(name, username, password, role, true);
+        String passwordHash = passwordEncoder.encode(password);
+
+        UserCreateRequest userRequest = new UserCreateRequest(name, username, passwordHash, role, true);
+        System.out.println(userRequest);
 
         try {
             UserResponse user = userService.createUser(userRequest);
@@ -107,7 +115,7 @@ public class UserConsole {
     }
 
     private void findUserForId(TextIO textIO) {
-        System.out.print(colors.blue("\n Find User"));
+        System.out.print(colors.blue("\n Find User \n"));
 
         Integer id = textIO.newIntInputReader()
                 .withMinVal(1)
@@ -116,14 +124,16 @@ public class UserConsole {
         try {
             UserResponse user = userService.getUserById(id);
             printUser(user);
+            consoleUtils.pause(textIO);
         } catch (Exception e) {
             System.out.println( colors.red("\n Error searching for the  user: " +  e.getMessage()) );
+            consoleUtils.pause(textIO);
         }
 
     }
 
     private void listUser(TextIO textIO) {
-        System.out.print(colors.blue("\n Users"));
+        System.out.print(colors.blue("\n Users \n"));
 
         try {
 
@@ -136,9 +146,11 @@ public class UserConsole {
             System.out.println( colors.cyan( String.format( "%-5s %-25s %-20s %-10s %-10s", "ID", "NAME", "USERNAME", "ROLE", "ACTIVE" ) ) );
             System.out.println( colors.cyan( "--------------------------------------------------------------------------" ) );
             users.forEach(this::printUserRow);
+            consoleUtils.pause(textIO);
 
         } catch (Exception e) {
             System.out.println( colors.red( "\nError listing users: " + e.getMessage() ) );
+            consoleUtils.pause(textIO);
         }
 
 
@@ -146,7 +158,7 @@ public class UserConsole {
     }
 
     private void updateUser(TextIO textIO) {
-        System.out.print(colors.blue("\n Update User"));
+        System.out.print(colors.blue("\n Update User \n"));
 
         Integer id = textIO.newIntInputReader()
                 .withMinVal(1)
@@ -174,17 +186,19 @@ public class UserConsole {
             System.out.println( colors.green( "\nUser updated successfully!" ) );
 
             printUser(updatedUser);
+            consoleUtils.pause(textIO);
 
 
         } catch (Exception e) {
             System.out.println( colors.red( "\nError updating user: " + e.getMessage() ) );
+            consoleUtils.pause(textIO);
         }
 
 
     }
 
     private void deleteUser(TextIO textIO) {
-        System.out.print(colors.blue("\n Delete User"));
+        System.out.print(colors.blue("\n Delete User \n"));
 
         Integer id = textIO.newIntInputReader() .withMinVal(1) .read("User ID: ");
 
@@ -203,10 +217,12 @@ public class UserConsole {
 
             userService.deleteUser(id);
             System.out.println( colors.green( "\nUser deleted successfully!" ) );
+            consoleUtils.pause(textIO);
 
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.println( colors.red( "\nError delete user: " + e.getMessage() ) );
+            consoleUtils.pause(textIO);
         }
 
 
