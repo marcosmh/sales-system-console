@@ -1,6 +1,7 @@
 package com.mark.microsystem.sales.system.main.menu;
 
 import com.mark.microsystem.sales.system.main.controller.LoginConsole;
+import com.mark.microsystem.sales.system.main.controller.UserConsole;
 import com.mark.microsystem.sales.system.main.model.entity.UserPerson;
 import com.mark.microsystem.sales.system.main.utils.ConsoleColors;
 import com.mark.microsystem.sales.system.main.utils.ConsoleUtils;
@@ -9,12 +10,16 @@ import org.beryx.textio.TextIO;
 public class MainMenu {
 
     private final LoginConsole loginConsole;
+    private final UserConsole userConsole;
+
     private final ConsoleColors colors;
     private final ConsoleUtils consoleUtils;
 
 
-    public MainMenu(LoginConsole loginConsole, ConsoleColors colors, ConsoleUtils consoleUtils) {
+    public MainMenu(LoginConsole loginConsole, UserConsole userConsole,
+                    ConsoleColors colors, ConsoleUtils consoleUtils) {
         this.loginConsole = loginConsole;
+        this.userConsole = userConsole;
         this.colors = colors;
         this.consoleUtils = consoleUtils;
     }
@@ -43,11 +48,12 @@ public class MainMenu {
                         + colors.purple("3. Sales\n")
                         + colors.cyan("4. Cash Reconciliation\n")
                         + colors.cyan("5. Suppliers\n")
-                        + colors.cyan("6. Invoices\n")
+                        + colors.orange("6. Invoices\n")
                         + colors.red("7. Exit"));
 
         switch (option) {
             case 1: // Users
+                userConsole.menuUsers();
                 break;
             case 2: // Inventory
                 break;

@@ -2,6 +2,10 @@ package com.mark.microsystem.sales.system.main.utils;
 
 public class ConsoleColors {
 
+
+    public ConsoleColors() {
+    }
+
     // Reset
     public static final String RESET = "\u001B[0m";
 
@@ -13,6 +17,10 @@ public class ConsoleColors {
     public static final String BLUE = "\u001B[34m";
     public static final String PURPLE = "\u001B[35m";
     public static final String CYAN = "\u001B[36m";
+    public static final String ORANGE = "\u001B[38;5;208m";
+    public static final String NAVY_BLUE       = "\u001B[38;5;17m";
+    public static final String DARK_BLUE       = "\u001B[38;5;18m";
+    public static final String LIGHT_BLUE      = "\u001B[38;5;39m";
     public static final String WHITE = "\u001B[37m";
 
     // Methods for brilliant colors
@@ -52,6 +60,22 @@ public class ConsoleColors {
 
     public static String cyan(String text) {
         return CYAN + text + RESET;
+    }
+
+    public static String orange(String text) {
+        return ORANGE + text + RESET;
+    }
+
+    public static String navyBlue(String text) {
+        return NAVY_BLUE + text + RESET;
+    }
+
+    public static String darkBlue(String text) {
+        return DARK_BLUE + text + RESET;
+    }
+
+    public static String lightBlue(String text) {
+        return LIGHT_BLUE + text + RESET;
     }
 
     public static String white(String text) {

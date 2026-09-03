@@ -2,6 +2,7 @@ package com.mark.microsystem.sales.system;
 
 import com.mark.microsystem.sales.system.main.controller.LoginConsole;
 
+import com.mark.microsystem.sales.system.main.controller.UserConsole;
 import com.mark.microsystem.sales.system.main.menu.MainMenu;
 import com.mark.microsystem.sales.system.main.model.entity.UserPerson;
 import com.mark.microsystem.sales.system.main.utils.ConsoleColors;
@@ -23,7 +24,7 @@ public class SalesSystemApplication {
 	}
 
 	@Bean
-	CommandLineRunner runMenu(LoginConsole loginConsole) {
+	CommandLineRunner runMenu(LoginConsole loginConsole, UserConsole userConsole) {
 
 		return args -> {
 
@@ -45,7 +46,7 @@ public class SalesSystemApplication {
 			textIO.getTextTerminal().println(
 					colors.green("Welcome " + user.getUsername() + " with role " + user.getRole()));
 
-			MainMenu mainMenu = new MainMenu(loginConsole, colors, consoleUtils);
+			MainMenu mainMenu = new MainMenu(loginConsole, userConsole, colors, consoleUtils);
 			mainMenu.showMenu(user, textIO);
 
 		};
