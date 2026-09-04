@@ -1,5 +1,6 @@
 package com.mark.microsystem.sales.system.main.menu;
 
+import com.mark.microsystem.sales.system.main.controller.InventoryConsole;
 import com.mark.microsystem.sales.system.main.controller.LoginConsole;
 import com.mark.microsystem.sales.system.main.controller.UserConsole;
 import com.mark.microsystem.sales.system.main.model.entity.UserPerson;
@@ -11,15 +12,18 @@ public class MainMenu {
 
     private final LoginConsole loginConsole;
     private final UserConsole userConsole;
+    private final InventoryConsole inventoryConsole;
 
     private final ConsoleColors colors;
     private final ConsoleUtils consoleUtils;
 
 
     public MainMenu(LoginConsole loginConsole, UserConsole userConsole,
+                    InventoryConsole inventoryConsole,
                     ConsoleColors colors, ConsoleUtils consoleUtils) {
         this.loginConsole = loginConsole;
         this.userConsole = userConsole;
+        this.inventoryConsole = inventoryConsole;
         this.colors = colors;
         this.consoleUtils = consoleUtils;
     }
@@ -56,6 +60,7 @@ public class MainMenu {
                 userConsole.menuUsers();
                 break;
             case 2: // Inventory
+                inventoryConsole.menuInventory();
                 break;
             case 3: // Sales
                 break;

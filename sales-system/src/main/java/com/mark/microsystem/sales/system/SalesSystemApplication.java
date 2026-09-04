@@ -1,5 +1,6 @@
 package com.mark.microsystem.sales.system;
 
+import com.mark.microsystem.sales.system.main.controller.InventoryConsole;
 import com.mark.microsystem.sales.system.main.controller.LoginConsole;
 
 import com.mark.microsystem.sales.system.main.controller.UserConsole;
@@ -24,7 +25,7 @@ public class SalesSystemApplication {
 	}
 
 	@Bean
-	CommandLineRunner runMenu(LoginConsole loginConsole, UserConsole userConsole) {
+	CommandLineRunner runMenu(LoginConsole loginConsole, UserConsole userConsole, InventoryConsole inventoryConsole) {
 
 		return args -> {
 
@@ -46,7 +47,7 @@ public class SalesSystemApplication {
 			textIO.getTextTerminal().println(
 					colors.green("Welcome " + user.getUsername() + " with role " + user.getRole()));
 
-			MainMenu mainMenu = new MainMenu(loginConsole, userConsole, colors, consoleUtils);
+			MainMenu mainMenu = new MainMenu(loginConsole, userConsole, inventoryConsole, colors, consoleUtils);
 			mainMenu.showMenu(user, textIO);
 
 		};
