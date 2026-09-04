@@ -31,27 +31,41 @@ public class UserConsole {
 
     public void menuUsers() {
         consoleUtils.clearScreen();
-        TextIO textIO = TextIoFactory.getTextIO();
-        int option = textIO.newIntInputReader()
-                .withMinVal(1)
-                .withMaxVal(6)
-                .read(colors.yellow("User Management:\n")
-                        + colors.green("1. Create User\n")
-                        + colors.blue("2. Find User for Id\n")
-                        + colors.purple("3. List Users\n")
-                        + colors.cyan("4. Updated User\n")
-                        + colors.orange("5. Delete User\n")
-                        + colors.red("6. Back\n")
-                );
+        boolean repeat = true;
 
-        switch (option) {
-            case 1 -> createUser(textIO);
-            case 2 -> findUserForId(textIO);
-            case 3 -> listUser(textIO);
-            case 4 -> updateUser(textIO);
-            case 5 -> deleteUser(textIO);
-            case 6 -> { return; }
-            default -> System.out.println( colors.red("Invalid option.") );
+        while (repeat) {
+            consoleUtils.clearScreen();
+            TextIO textIO = TextIoFactory.getTextIO();
+            int option = textIO.newIntInputReader()
+                    .withMinVal(1)
+                    .withMaxVal(6)
+                    .read(colors.yellow("User Management:\n")
+                            + colors.green("1. Create User\n")
+                            + colors.blue("2. Find User for Id\n")
+                            + colors.purple("3. List Users\n")
+                            + colors.cyan("4. Updated User\n")
+                            + colors.orange("5. Delete User\n")
+                            + colors.red("6. Back\n")
+                    );
+
+            switch (option) {
+                case 1 -> createUser(textIO);
+                case 2 -> findUserForId(textIO);
+                case 3 -> listUser(textIO);
+                case 4 -> updateUser(textIO);
+                case 5 -> deleteUser(textIO);
+                case 6 -> {
+                    textIO.getTextTerminal()
+                            .println(colors.yellow("\nReturning to the main menu...\n"));
+                    repeat = false;
+                }
+                default -> System.out.println( colors.red("Invalid option.") );
+            }
+
+            if (repeat) {
+                consoleUtils.pause(textIO);
+            }
+
         }
 
     }
@@ -104,7 +118,7 @@ public class UserConsole {
             UserResponse user = userService.createUser(userRequest);
             System.out.println(colors.green("\n User created successfully") );
             printUser(user);
-            consoleUtils.pause(textIO);
+
         } catch (Exception e) {
             System.out.println( colors.red("\n Error creating user: " +  e.getMessage()) );
             consoleUtils.pause(textIO);
@@ -124,7 +138,7 @@ public class UserConsole {
         try {
             UserResponse user = userService.getUserById(id);
             printUser(user);
-            consoleUtils.pause(textIO);
+
         } catch (Exception e) {
             System.out.println( colors.red("\n Error searching for the  user: " +  e.getMessage()) );
             consoleUtils.pause(textIO);
@@ -146,7 +160,7 @@ public class UserConsole {
             System.out.println( colors.cyan( String.format( "%-5s %-25s %-20s %-10s %-10s", "ID", "NAME", "USERNAME", "ROLE", "ACTIVE" ) ) );
             System.out.println( colors.cyan( "--------------------------------------------------------------------------" ) );
             users.forEach(this::printUserRow);
-            consoleUtils.pause(textIO);
+
 
         } catch (Exception e) {
             System.out.println( colors.red( "\nError listing users: " + e.getMessage() ) );
@@ -193,7 +207,6 @@ public class UserConsole {
             System.out.println( colors.green( "\nUser updated successfully!" ) );
 
             printUser(updatedUser);
-            consoleUtils.pause(textIO);
 
 
         } catch (Exception e) {
@@ -229,7 +242,6 @@ public class UserConsole {
 
             userService.deleteUser(user.id());
             System.out.println( colors.green( "\nUser deleted successfully!" ) );
-            consoleUtils.pause(textIO);
 
 
         } catch (Exception e) {

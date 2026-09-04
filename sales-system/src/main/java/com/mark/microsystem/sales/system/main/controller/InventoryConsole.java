@@ -22,9 +22,9 @@ public class InventoryConsole {
     public void menuInventory() {
 
         consoleUtils.clearScreen();
-        boolean continuee = true;
+        boolean repeat = true;
 
-        while (continuee) {
+        while (repeat) {
 
             consoleUtils.clearScreen();
             TextIO textIO = TextIoFactory.getTextIO();
@@ -51,19 +51,17 @@ public class InventoryConsole {
 
                 case 5 -> {
                     textIO.getTextTerminal()
-                            .println(colors.yellow("\nRegresando al menú principal...\n"));
-                    continuee = false;
+                            .println(colors.yellow("\nReturning to the main menu...\n"));
+                    repeat = false;
                 }
+                default -> System.out.println( colors.red("Invalid option.") );
             }
 
-            if (continuee) {
+            if (repeat) {
                 consoleUtils.pause(textIO);
             }
 
-
         }
-
-
 
     }
 
