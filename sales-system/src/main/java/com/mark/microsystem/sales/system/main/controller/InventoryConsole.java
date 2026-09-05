@@ -2,7 +2,9 @@ package com.mark.microsystem.sales.system.main.controller;
 
 import com.mark.microsystem.sales.system.main.model.dto.ProductCreateRequest;
 import com.mark.microsystem.sales.system.main.model.dto.ProductResponse;
+import com.mark.microsystem.sales.system.main.model.dto.SupplierCreateRequest;
 import com.mark.microsystem.sales.system.main.model.dto.SupplierResponse;
+import com.mark.microsystem.sales.system.main.model.entity.Supplier;
 import com.mark.microsystem.sales.system.main.service.IProductService;
 import com.mark.microsystem.sales.system.main.service.ISupplier;
 import com.mark.microsystem.sales.system.main.utils.ConsoleColors;
@@ -129,7 +131,54 @@ public class InventoryConsole {
 
     private void createSupplier(TextIO textIO) {
         System.out.print(colors.blue("\n Create Supplier \n"));
-        
+
+        String name = textIO.newStringInputReader()
+                .withValueChecker( (value, item) -> {
+                    if ( value == null || value.isBlank() ) {
+                        throw new IllegalArgumentException("Name cannot by empty");
+                    }
+                    return Collections.emptyList();
+                })
+                .read( colors.yellowLight("Name: "));
+
+        String contact = textIO.newStringInputReader()
+                .withValueChecker( (value, item) -> {
+                    if ( value == null || value.isBlank() ) {
+                        throw new IllegalArgumentException("Contact cannot by empty");
+                    }
+                    return Collections.emptyList();
+                })
+                .read( colors.yellowLight("Contact: "));
+
+
+        String phone = textIO.newStringInputReader()
+                .withValueChecker( (value, item) -> {
+                    if ( value == null || value.isBlank() ) {
+                        throw new IllegalArgumentException("Phone cannot by empty");
+                    }
+                    return Collections.emptyList();
+                })
+                .read( colors.yellowLight("Phone: "));
+
+        String email = textIO.newStringInputReader()
+                .withValueChecker( (value, item) -> {
+                    if ( value == null || value.isBlank() ) {
+                        throw new IllegalArgumentException("Email cannot by empty");
+                    }
+                    return Collections.emptyList();
+                })
+                .read( colors.yellowLight("Email: "));
+
+        SupplierCreateRequest request = new SupplierCreateRequest(name, contact, phone, email);
+
+        try {
+            SupplierResponse supplier = supplierService.createSupplier(request);
+            System.out.println(colors.green("\n Successfully created supplier.") );
+            showSupplier(textIO,supplier);
+        }  catch(Exception e) {
+            System.out.println(colors.red("\n Error creating supplier: ") + e.getMessage() );
+            consoleUtils.pause(textIO);
+        }
 
     }
 
