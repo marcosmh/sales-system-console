@@ -1,6 +1,7 @@
 package com.mark.microsystem.sales.system.main.controller;
 
 import com.mark.microsystem.sales.system.main.model.dto.*;
+import com.mark.microsystem.sales.system.main.model.entity.Supplier;
 import com.mark.microsystem.sales.system.main.service.IProductService;
 import com.mark.microsystem.sales.system.main.service.ISupplier;
 import com.mark.microsystem.sales.system.main.utils.ConsoleColors;
@@ -140,39 +141,31 @@ public class InventoryConsole {
             System.out.println(colors.red("\n Error creating product: ") + e.getMessage() );
             consoleUtils.pause(textIO);
         }
-
-
     }
 
     private void listProducts(TextIO textIO) {
         System.out.print(colors.blue("\n List Products \n"));
-
         try {
             List<ProductResponse> products = productService.listProductos();
             if(products.isEmpty()) {
                 System.out.print(colors.orange("\n No products found."));
                 return;
             }
-
             showTitleProduct();
             for(ProductResponse product : products) {
                 showProduct(product);
             }
-
         } catch (Exception e) {
             System.out.println(colors.red("\n Error show the list products: ") + e.getMessage() );
             consoleUtils.pause(textIO);
         }
-
     }
 
     public void findProductById(TextIO textIO) {
         System.out.print(colors.blue("\n Find Product for Id \n"));
-
         Integer id = textIO.newIntInputReader()
                 .withMinVal(1)
                 .read(colors.yellowLight("Product Id: "));
-
         try {
             ProductResponse product = productService.getProductoById(id);
             showTitleProduct();
@@ -185,9 +178,7 @@ public class InventoryConsole {
     }
 
     public void updateProduct(TextIO textIO) {
-
         System.out.print(colors.blue("\n Update Product \n"));
-
         String existProduct = textIO.newStringInputReader()
                 .withValueChecker( (value, item) -> {
                     if ( value == null || value.isBlank() ) {
@@ -200,9 +191,7 @@ public class InventoryConsole {
         System.out.println("Product: "+existProduct);
 
         try {
-
             ProductResponse currentProduct = productService.findByName(existProduct);
-
             System.out.println( colors.yellow("\nCurrent Product:") );
             showTitleProduct();
             showProduct(currentProduct);
@@ -232,7 +221,6 @@ public class InventoryConsole {
             System.out.println( colors.red( "\nError updating product: " + e.getMessage() ) );
             consoleUtils.pause(textIO);
         }
-
 
     }
 
@@ -271,23 +259,28 @@ public class InventoryConsole {
 
     }
 
-
     private void supplierMenu(TextIO textIO) {
         boolean repeat = true;
         while (repeat) {
             consoleUtils.clearScreen();
             int option = textIO.newIntInputReader()
                     .withMinVal(1)
-                    .withMaxVal(3)
-                    .read(colors.yellow("Supplier Management:\n")
-                            + colors.green("1. Create Supplier\n")
-                            + colors.blue("2. List Suppliers\n")
-                            + colors.red("3. Back\n"));
+                    .withMaxVal(6)
+                    .read(colors.brightBlue("Supplier Management:\n")
+                            + colors.brightPurple("1. Create Supplier\n")
+                            + colors.brightPurple("2. Find Supplier by Id\n")
+                            + colors.brightPurple("3. List Suppliers\n")
+                            + colors.brightPurple("4. Update Product\n")
+                            + colors.brightPurple("5. Delete Product\n")
+                            + colors.red("6. Back\n"));
 
             switch (option) {
                 case 1 -> createSupplier(textIO);
-                case 2 -> listSuppliers(textIO);
-                case 3 -> repeat = false;
+                case 2 -> findSuppliertById(textIO);
+                case 3 -> listSuppliers(textIO);
+                case 4 -> updateSupplier(textIO);
+                case 5 -> deleteSupplier(textIO);
+                case 6 -> repeat = false;
                 default -> textIO.getTextTerminal().println(colors.red("Invalid option."));
             }
             if (repeat) consoleUtils.pause(textIO);
@@ -349,23 +342,102 @@ public class InventoryConsole {
     }
 
     private void listSuppliers(TextIO textIO) {
-
         System.out.print(colors.blue("\n List Suppliers \n"));
-
         try {
             List<SupplierResponse> suppliers = supplierService.listSuppliers();
             if(suppliers.isEmpty()) {
                 System.out.print(colors.orange("\n No suppliers found."));
                 return;
             }
-
             showTitleSupplier();
             for(SupplierResponse supplier : suppliers) {
                 showSupplier(supplier);
             }
-
         } catch (Exception e) {
             System.out.println(colors.red("\n Error show the list suppliers: ") + e.getMessage() );
+            consoleUtils.pause(textIO);
+        }
+    }
+
+    private void findSuppliertById(TextIO textIO) {
+        System.out.print(colors.blue("\n Find Supplier for Id \n"));
+        Integer id = textIO.newIntInputReader()
+                .withMinVal(1)
+                .read(colors.yellowLight("Supplier Id: "));
+        try {
+            SupplierResponse supplier = supplierService.getSupplierById(id);
+            showTitleSupplier();
+            showSupplier(supplier);
+        } catch (Exception e) {
+            System.out.println( colors.red("\n Error searching for the  supplier: " +  e.getMessage()) );
+            consoleUtils.pause(textIO);
+        }
+    }
+
+    private void updateSupplier(TextIO textIO) {
+        System.out.print(colors.blue("\n Supplier Product \n"));
+
+        String existSupplier = textIO.newStringInputReader()
+                .withValueChecker( (value, item) -> {
+                    if ( value == null || value.isBlank() ) {
+                        throw new IllegalArgumentException(colors.orange("Supplier Name cannot by empty"));
+                    }
+                    return Collections.emptyList();
+                })
+                .read(colors.yellowLight("Supplier Name: "));
+
+        try {
+            SupplierResponse currentSupplier = supplierService.findByName(existSupplier);
+
+            System.out.println( colors.yellow("\nCurrent Supplier:") );
+            showTitleSupplier();
+            showSupplier(currentSupplier);
+
+            String name = textIO.newStringInputReader().read( colors.yellowLight("Name [" + currentSupplier.name() + "]: ") );
+            String contact = textIO.newStringInputReader().read( colors.yellowLight("Contact [" + currentSupplier.contact() + "]: ") );
+            String phone = textIO.newStringInputReader().read( colors.yellowLight("Phone [" + currentSupplier.phone() + "]: ") );
+            String email = textIO.newStringInputReader().read( colors.yellowLight("Email [" + currentSupplier.email() + "]: ") );
+
+            SupplierUpdateRequest request = new SupplierUpdateRequest(name, contact, phone, email);
+            SupplierResponse updatedSupplier = supplierService.updateSupplier(currentSupplier.id(), request);
+
+            System.out.println( colors.green( "\nSupplier updated successfully!" ) );
+            showTitleSupplier();
+            showSupplier(updatedSupplier);
+
+        } catch (Exception e) {
+            System.out.println( colors.red( "\nError updating supplier: " + e.getMessage() ) );
+            consoleUtils.pause(textIO);
+        }
+
+
+    }
+
+    private void deleteSupplier(TextIO textIO) {
+        System.out.print(colors.blue("\n Delete Supplier \n"));
+
+        String existSupplier = textIO.newStringInputReader()
+                .read(colors.yellowLight("Supplier Name: "));
+
+        try {
+            SupplierResponse supplier = supplierService.findByName(existSupplier);
+            System.out.println( colors.yellow("\nSupplier to delete:") );
+            showTitleSupplier();
+            showSupplier(supplier);
+            if( !existSupplier.equalsIgnoreCase(supplier.name())) {
+                throw new IllegalArgumentException(colors.orange("Supplier not exists."));
+            }
+            boolean confirm = textIO.newBooleanInputReader().read( colors.red( "Are you sure you want to delete this supplier?" ) );
+
+            if (!confirm) {
+                System.out.println(colors.yellow("Operation cancelled."));
+                return;
+            }
+            supplierService.deleteSupplier(supplier.id());
+            System.out.println( colors.green( "\nSupplier deleted successfully!" ) );
+
+        } catch (Exception e) {
+            System.out.println( colors.red( "\nError delete supplier: " + e.getMessage() ) );
             consoleUtils.pause(textIO);
         }
 
