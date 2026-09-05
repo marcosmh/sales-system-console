@@ -124,8 +124,6 @@ public class UserConsole {
             consoleUtils.pause(textIO);
         }
 
-
-
     }
 
     private void findUserForId(TextIO textIO) {

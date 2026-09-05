@@ -1,5 +1,8 @@
 package com.mark.microsystem.sales.system.main.controller;
 
+import com.mark.microsystem.sales.system.main.model.dto.ProductCreateRequest;
+import com.mark.microsystem.sales.system.main.model.dto.ProductResponse;
+import com.mark.microsystem.sales.system.main.model.dto.SupplierResponse;
 import com.mark.microsystem.sales.system.main.service.IProductService;
 import com.mark.microsystem.sales.system.main.service.ISupplier;
 import com.mark.microsystem.sales.system.main.utils.ConsoleColors;
@@ -8,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.util.Collections;
 
 @Component
 @RequiredArgsConstructor
@@ -67,7 +73,57 @@ public class InventoryConsole {
 
 
     private void createProduct(TextIO textIO) {
-        System.out.print(colors.blue("\n Create Product \n"));
+        //System.out.print(colors.blue("\n Create Product \n"));
+        textIO.getTextTerminal().println(colors.blue("\n=== Create Product ==="));
+
+        String name = textIO.newStringInputReader()
+                .withValueChecker( (value, item) -> {
+                    if ( value == null || value.isBlank() ) {
+                        throw new IllegalArgumentException("Name cannot by empty");
+                    }
+                    return Collections.emptyList();
+                })
+                .read("Name: ");
+
+        String description = textIO.newStringInputReader()
+                .withValueChecker( (value, item) -> {
+                    if ( value == null || value.isBlank() ) {
+                        throw new IllegalArgumentException("Description cannot by empty");
+                    }
+                    return Collections.emptyList();
+                })
+                .read("Description: ");
+
+        BigDecimal price = new BigDecimal(textIO.newStringInputReader()
+                .withMinLength(1)
+                .withValueChecker( (value, item) -> {
+                    if ( value == null ) {
+                        throw new IllegalArgumentException("Price cannot by empty");
+                    }
+                    return Collections.emptyList();
+                })
+                .read("Price: "));
+
+        Integer stock = textIO.newIntInputReader()
+                .withMinVal(0)
+                .read("Stock: ");
+
+        Integer supplierId = textIO.newIntInputReader()
+                .withMinVal(1)
+                .read("Supplier Id ");
+
+        ProductCreateRequest productReq = new ProductCreateRequest(name, description, price, stock, supplierId);
+
+        try {
+            ProductResponse product = productService.createProducto(productReq);
+            System.out.println(colors.green("\n Successfully created product.") );
+            showProduct(textIO, product);
+
+        }  catch(Exception e) {
+            System.out.println(colors.red("\n Error creating product: ") + e.getMessage() );
+            consoleUtils.pause(textIO);
+        }
+
 
     }
 
@@ -84,6 +140,31 @@ public class InventoryConsole {
 
     }
 
+    private void showProduct(TextIO textIO, ProductResponse product) {
+
+        System.out.println();
+        String supplierName = product.supplier() != null
+                ? product.supplier().name()
+                : "Sin proveedor";
+
+        System.out.println( colors.cyan( String.format( "%-5s %-25s %-20s %-10s %-10s", "ID", "NAME", "PRICE", "STOCK", "SUPPLIER" )));
+        System.out.println( colors.cyan( "--------------------------------------------------------------------------" ) );
+        System.out.printf(  colors.yellow("%-5s %-25s %-20s %-10s %-10s%n"),  product.id(), product.name(), product.price(), product.stock(), product.supplier().name());
+
+        System.out.printf(  colors.pink("XXXXXX"));
+        System.out.printf(  colors.pinkLight("ZZZZZ"));
+    }
+
+    private void showSupplier(TextIO textIO, SupplierResponse supplier) {
+
+        System.out.println();
+        System.out.println( colors.cyan( String.format( "%-5s %-25s %-20s %-10s %-10s",
+                "ID", "NAME", "CONTACT", "PHONE", "EMAIL" )));
+        System.out.println( colors.cyan( "--------------------------------------------------------------------------" ) );
+        System.out.printf(  colors.yellow("%-5s %-25s %-20s %-10s %-10s%n"),
+                supplier.id(), supplier.name(), supplier.contact(), supplier.phone(), supplier.email());
+
+    }
 
 
 
