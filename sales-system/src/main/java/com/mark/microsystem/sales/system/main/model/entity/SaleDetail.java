@@ -65,4 +65,9 @@ public class SaleDetail {
 
     }
 
+    public BigDecimal subTotal() {
+        return product.getPrice()
+                .multiply(BigDecimal.valueOf(quantity));
+    }
+
 }
