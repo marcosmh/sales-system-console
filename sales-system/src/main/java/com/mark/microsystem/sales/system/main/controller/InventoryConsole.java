@@ -8,8 +8,10 @@ import com.mark.microsystem.sales.system.main.service.IProductService;
 import com.mark.microsystem.sales.system.main.service.ISupplier;
 import com.mark.microsystem.sales.system.main.utils.ConsoleColors;
 import com.mark.microsystem.sales.system.main.utils.ConsoleUtils;
+
 import lombok.RequiredArgsConstructor;
 import org.beryx.textio.TextIO;
+
 import org.beryx.textio.TextIoFactory;
 import org.springframework.stereotype.Component;
 
@@ -75,28 +77,6 @@ public class InventoryConsole {
             switch (option) {
                 case 1 -> createProduct(textIO);
                 case 2 -> listProducts(textIO);
-                case 3 -> repeat = false;
-                default -> textIO.getTextTerminal().println(colors.red("Invalid option."));
-            }
-            if (repeat) consoleUtils.pause(textIO);
-        }
-    }
-
-    private void supplierMenu(TextIO textIO) {
-        boolean repeat = true;
-        while (repeat) {
-            consoleUtils.clearScreen();
-            int option = textIO.newIntInputReader()
-                    .withMinVal(1)
-                    .withMaxVal(3)
-                    .read(colors.yellow("Supplier Management:\n")
-                            + colors.green("1. Create Supplier\n")
-                            + colors.blue("2. List Suppliers\n")
-                            + colors.red("3. Back\n"));
-
-            switch (option) {
-                case 1 -> createSupplier(textIO);
-                case 2 -> listSuppliers(textIO);
                 case 3 -> repeat = false;
                 default -> textIO.getTextTerminal().println(colors.red("Invalid option."));
             }
@@ -184,6 +164,27 @@ public class InventoryConsole {
     }
 
 
+    private void supplierMenu(TextIO textIO) {
+        boolean repeat = true;
+        while (repeat) {
+            consoleUtils.clearScreen();
+            int option = textIO.newIntInputReader()
+                    .withMinVal(1)
+                    .withMaxVal(3)
+                    .read(colors.yellow("Supplier Management:\n")
+                            + colors.green("1. Create Supplier\n")
+                            + colors.blue("2. List Suppliers\n")
+                            + colors.red("3. Back\n"));
+
+            switch (option) {
+                case 1 -> createSupplier(textIO);
+                case 2 -> listSuppliers(textIO);
+                case 3 -> repeat = false;
+                default -> textIO.getTextTerminal().println(colors.red("Invalid option."));
+            }
+            if (repeat) consoleUtils.pause(textIO);
+        }
+    }
 
     private void createSupplier(TextIO textIO) {
         System.out.print(colors.blue("\n Create Supplier \n"));
