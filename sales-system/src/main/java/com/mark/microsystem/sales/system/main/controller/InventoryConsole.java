@@ -205,7 +205,7 @@ public class InventoryConsole {
         }
 
     }
-    
+
     private void listSuppliers(TextIO textIO) {
 
         System.out.print(colors.blue("\n List Suppliers \n"));
@@ -243,10 +243,6 @@ public class InventoryConsole {
 
     private void showProduct(ProductResponse product) {
         System.out.println();
-        String supplierName = product.supplier() != null
-                ? product.supplier().name()
-                : "Sin proveedor";
-
         System.out.printf(  colors.pinkLight("%-5s %-25s %-20s %-10s %-10s%n"),  product.id(), product.name(), product.price(), product.stock(), product.supplier().name());
 
     }
