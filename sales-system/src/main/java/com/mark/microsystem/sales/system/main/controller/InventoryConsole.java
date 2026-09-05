@@ -130,6 +130,28 @@ public class InventoryConsole {
 
     }
 
+    private void listProducts(TextIO textIO) {
+        System.out.print(colors.blue("\n List Products \n"));
+
+        try {
+            List<ProductResponse> products = productService.listProductos();
+            if(products.isEmpty()) {
+                System.out.print(colors.orange("\n No products found."));
+                return;
+            }
+
+            showTitleProduct();
+            for(ProductResponse product : products) {
+                showProduct(product);
+            }
+
+        } catch (Exception e) {
+            System.out.println(colors.red("\n Error show the list products: ") + e.getMessage() );
+            consoleUtils.pause(textIO);
+        }
+
+    }
+
     private void createSupplier(TextIO textIO) {
         System.out.print(colors.blue("\n Create Supplier \n"));
 
@@ -183,29 +205,7 @@ public class InventoryConsole {
         }
 
     }
-
-    private void listProducts(TextIO textIO) {
-        System.out.print(colors.blue("\n List Products \n"));
-
-        try {
-            List<ProductResponse> products = productService.listProductos();
-            if(products.isEmpty()) {
-                System.out.print(colors.orange("\n No products found."));
-                return;
-            }
-
-            showTitleProduct();
-            for(ProductResponse product : products) {
-                showProduct(product);
-            }
-
-        } catch (Exception e) {
-            System.out.println(colors.red("\n Error show the list products: ") + e.getMessage() );
-            consoleUtils.pause(textIO);
-        }
-
-    }
-
+    
     private void listSuppliers(TextIO textIO) {
 
         System.out.print(colors.blue("\n List Suppliers \n"));
