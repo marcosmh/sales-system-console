@@ -4,8 +4,6 @@ import com.mark.microsystem.sales.system.main.model.dto.ProductCreateRequest;
 import com.mark.microsystem.sales.system.main.model.dto.ProductResponse;
 import com.mark.microsystem.sales.system.main.model.dto.SupplierCreateRequest;
 import com.mark.microsystem.sales.system.main.model.dto.SupplierResponse;
-import com.mark.microsystem.sales.system.main.model.entity.Product;
-import com.mark.microsystem.sales.system.main.model.entity.Supplier;
 import com.mark.microsystem.sales.system.main.service.IProductService;
 import com.mark.microsystem.sales.system.main.service.ISupplier;
 import com.mark.microsystem.sales.system.main.utils.ConsoleColors;
