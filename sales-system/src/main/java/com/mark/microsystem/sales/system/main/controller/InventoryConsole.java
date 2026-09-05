@@ -121,7 +121,8 @@ public class InventoryConsole {
         try {
             ProductResponse product = productService.createProducto(productReq);
             System.out.println(colors.green("\n Successfully created product.") );
-            showProduct(textIO, product);
+            showTitleProduct();
+            showProduct(product);
 
         }  catch(Exception e) {
             System.out.println(colors.red("\n Error creating product: ") + e.getMessage() );
@@ -176,7 +177,8 @@ public class InventoryConsole {
         try {
             SupplierResponse supplier = supplierService.createSupplier(request);
             System.out.println(colors.green("\n Successfully created supplier.") );
-            showSupplier(textIO,supplier);
+            showTitleSupplier();
+            showSupplier(supplier);
         }  catch(Exception e) {
             System.out.println(colors.red("\n Error creating supplier: ") + e.getMessage() );
             consoleUtils.pause(textIO);
@@ -194,8 +196,9 @@ public class InventoryConsole {
                 return;
             }
 
+            showTitleProduct();
             for(ProductResponse product : products) {
-                showProduct(textIO, product);
+                showProduct(product);
             }
 
         } catch (Exception e) {
@@ -216,8 +219,9 @@ public class InventoryConsole {
                 return;
             }
 
+            showTitleSupplier();
             for(SupplierResponse supplier : suppliers) {
-                showSupplier(textIO, supplier);
+                showSupplier(supplier);
             }
 
         } catch (Exception e) {
@@ -227,25 +231,30 @@ public class InventoryConsole {
 
     }
 
-    private void showProduct(TextIO textIO, ProductResponse product) {
+    private void showTitleProduct() {
+        System.out.println( colors.cyan( String.format( "%-5s %-25s %-20s %-10s %-10s", "ID", "NAME", "PRICE", "STOCK", "SUPPLIER" )));
+        System.out.println( colors.cyan( "--------------------------------------------------------------------------" ) );
+    }
 
+    private void showTitleSupplier() {
+        System.out.println( colors.cyan( String.format( "%-5s %-25s %-20s %-10s %-10s",
+                "ID", "NAME", "CONTACT", "PHONE", "EMAIL" )));
+        System.out.println( colors.cyan( "--------------------------------------------------------------------------" ) );
+
+    }
+
+    private void showProduct(ProductResponse product) {
         System.out.println();
         String supplierName = product.supplier() != null
                 ? product.supplier().name()
                 : "Sin proveedor";
 
-        System.out.println( colors.cyan( String.format( "%-5s %-25s %-20s %-10s %-10s", "ID", "NAME", "PRICE", "STOCK", "SUPPLIER" )));
-        System.out.println( colors.cyan( "--------------------------------------------------------------------------" ) );
         System.out.printf(  colors.pinkLight("%-5s %-25s %-20s %-10s %-10s%n"),  product.id(), product.name(), product.price(), product.stock(), product.supplier().name());
 
     }
 
-    private void showSupplier(TextIO textIO, SupplierResponse supplier) {
-
+    private void showSupplier(SupplierResponse supplier) {
         System.out.println();
-        System.out.println( colors.cyan( String.format( "%-5s %-25s %-20s %-10s %-10s",
-                "ID", "NAME", "CONTACT", "PHONE", "EMAIL" )));
-        System.out.println( colors.cyan( "--------------------------------------------------------------------------" ) );
         System.out.printf(  colors.pinkLight("%-5s %-25s %-20s %-10s %-10s%n"),
                 supplier.id(), supplier.name(), supplier.contact(), supplier.phone(), supplier.email());
 
