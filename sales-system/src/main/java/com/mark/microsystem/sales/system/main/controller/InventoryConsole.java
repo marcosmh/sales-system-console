@@ -199,13 +199,31 @@ public class InventoryConsole {
             }
 
         } catch (Exception e) {
-            System.out.println(colors.red("\n Error show the list product: ") + e.getMessage() );
+            System.out.println(colors.red("\n Error show the list products: ") + e.getMessage() );
             consoleUtils.pause(textIO);
         }
 
     }
 
     private void listSuppliers(TextIO textIO) {
+
+        System.out.print(colors.blue("\n List Suppliers \n"));
+
+        try {
+            List<SupplierResponse> suppliers = supplierService.listSuppliers();
+            if(suppliers.isEmpty()) {
+                System.out.print(colors.orange("\n No suppliers found."));
+                return;
+            }
+
+            for(SupplierResponse supplier : suppliers) {
+                showSupplier(textIO, supplier);
+            }
+
+        } catch (Exception e) {
+            System.out.println(colors.red("\n Error show the list suppliers: ") + e.getMessage() );
+            consoleUtils.pause(textIO);
+        }
 
     }
 

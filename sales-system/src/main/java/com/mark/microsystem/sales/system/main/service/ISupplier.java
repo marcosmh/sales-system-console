@@ -10,13 +10,13 @@ public interface ISupplier {
 
     SupplierResponse createSupplier(SupplierCreateRequest request);
 
-    SupplierResponse updateProveedor(Integer id, SupplierUpdateRequest request);
+    SupplierResponse updateSupplier(Integer id, SupplierUpdateRequest request);
 
-    void deleteProveedor(Integer id);
+    void deleteSupplier(Integer id);
 
-    List<SupplierResponse> listProveedores();
+    List<SupplierResponse> listSuppliers();
 
-    SupplierResponse getProveedorById(Integer id);
+    SupplierResponse getSupplierById(Integer id);
 
     SupplierResponse findByName(String name);
 

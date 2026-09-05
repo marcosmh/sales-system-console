@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class SupplierService  implements ISupplier {
+public class SupplierService implements ISupplier {
 
     private final SupplierRepository supplierRepository;
 
@@ -37,7 +37,7 @@ public class SupplierService  implements ISupplier {
     }
 
     @Override
-    public SupplierResponse updateProveedor(Integer id, SupplierUpdateRequest request) {
+    public SupplierResponse updateSupplier(Integer id, SupplierUpdateRequest request) {
         Supplier supplier = supplierRepository.findById(id)
                 .orElseThrow( () ->
                         new ResourceNotFoundException("Supplier not found." ));
@@ -53,7 +53,7 @@ public class SupplierService  implements ISupplier {
     }
 
     @Override
-    public void deleteProveedor(Integer id) {
+    public void deleteSupplier(Integer id) {
         if( !supplierRepository.existsById(id) ) {
             throw new ResourceNotFoundException("Supplier not found.");
         }
@@ -61,7 +61,7 @@ public class SupplierService  implements ISupplier {
     }
 
     @Override
-    public List<SupplierResponse> listProveedores() {
+    public List<SupplierResponse> listSuppliers() {
         return supplierRepository.findAll()
                 .stream()
                 .map(this::toResponseSupplier)
@@ -69,7 +69,7 @@ public class SupplierService  implements ISupplier {
     }
 
     @Override
-    public SupplierResponse getProveedorById(Integer id) {
+    public SupplierResponse getSupplierById(Integer id) {
         Supplier supplier = supplierRepository.findById(id)
                 .orElseThrow( () ->
                         new ResourceNotFoundException("Supplier not found.") );
