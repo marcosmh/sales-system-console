@@ -4,6 +4,7 @@ import com.mark.microsystem.sales.system.main.model.dto.ProductCreateRequest;
 import com.mark.microsystem.sales.system.main.model.dto.ProductResponse;
 import com.mark.microsystem.sales.system.main.model.dto.SupplierCreateRequest;
 import com.mark.microsystem.sales.system.main.model.dto.SupplierResponse;
+import com.mark.microsystem.sales.system.main.model.entity.Product;
 import com.mark.microsystem.sales.system.main.model.entity.Supplier;
 import com.mark.microsystem.sales.system.main.service.IProductService;
 import com.mark.microsystem.sales.system.main.service.ISupplier;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -183,6 +185,23 @@ public class InventoryConsole {
     }
 
     private void listProducts(TextIO textIO) {
+        System.out.print(colors.blue("\n List Products \n"));
+
+        try {
+            List<ProductResponse> products = productService.listProductos();
+            if(products.isEmpty()) {
+                System.out.print(colors.orange("\n No products found."));
+                return;
+            }
+
+            for(ProductResponse product : products) {
+                showProduct(textIO, product);
+            }
+
+        } catch (Exception e) {
+            System.out.println(colors.red("\n Error show the list product: ") + e.getMessage() );
+            consoleUtils.pause(textIO);
+        }
 
     }
 
