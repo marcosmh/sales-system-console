@@ -28,49 +28,80 @@ public class InventoryConsole {
     private final ConsoleUtils consoleUtils = new ConsoleUtils(colors);
 
     public void menuInventory() {
-
         consoleUtils.clearScreen();
         boolean repeat = true;
 
         while (repeat) {
-
             consoleUtils.clearScreen();
             TextIO textIO = TextIoFactory.getTextIO();
             int option = textIO.newIntInputReader()
                     .withMinVal(1)
-                    .withMaxVal(5)
+                    .withMaxVal(3)
                     .read(colors.yellow("Inventory Management:\n")
-                            + colors.green("1. Create Product\n")
-                            + colors.blue("2. Create Supplier\n")
-                            + colors.purple("3. List Products\n")
-                            + colors.cyan("4. List Suppliers\n")
-                            + colors.orange("5. Back\n")
-                    );
+                            + colors.green("1. Product Menu\n")
+                            + colors.blue("2. Supplier Menu\n")
+                            + colors.orange("3. Back\n"));
 
             switch (option) {
 
-                case 1 -> createProduct(textIO);
+                case 1 -> productMenu(textIO);
 
-                case 2 -> createSupplier(textIO);
+                case 2 -> supplierMenu(textIO);
 
-                case 3 -> listProducts(textIO);
-
-                case 4 -> listSuppliers(textIO);
-
-                case 5 -> {
-                    textIO.getTextTerminal()
-                            .println(colors.yellow("\nReturning to the main menu...\n"));
+                case 3 -> {
+                    textIO.getTextTerminal().println(colors.yellow("\nReturning to the main menu...\n"));
                     repeat = false;
                 }
                 default -> System.out.println( colors.red("Invalid option.") );
             }
-
-            if (repeat) {
-                consoleUtils.pause(textIO);
-            }
+            if (repeat) consoleUtils.pause(textIO);
 
         }
 
+    }
+
+    private void productMenu(TextIO textIO) {
+        boolean repeat = true;
+        while (repeat) {
+            consoleUtils.clearScreen();
+            int option = textIO.newIntInputReader()
+                    .withMinVal(1)
+                    .withMaxVal(3)
+                    .read(colors.yellow("Product Management:\n")
+                            + colors.green("1. Create Product\n")
+                            + colors.blue("2. List Products\n")
+                            + colors.red("3. Back\n"));
+
+            switch (option) {
+                case 1 -> createProduct(textIO);
+                case 2 -> listProducts(textIO);
+                case 3 -> repeat = false;
+                default -> textIO.getTextTerminal().println(colors.red("Invalid option."));
+            }
+            if (repeat) consoleUtils.pause(textIO);
+        }
+    }
+
+    private void supplierMenu(TextIO textIO) {
+        boolean repeat = true;
+        while (repeat) {
+            consoleUtils.clearScreen();
+            int option = textIO.newIntInputReader()
+                    .withMinVal(1)
+                    .withMaxVal(3)
+                    .read(colors.yellow("Supplier Management:\n")
+                            + colors.green("1. Create Supplier\n")
+                            + colors.blue("2. List Suppliers\n")
+                            + colors.red("3. Back\n"));
+
+            switch (option) {
+                case 1 -> createSupplier(textIO);
+                case 2 -> listSuppliers(textIO);
+                case 3 -> repeat = false;
+                default -> textIO.getTextTerminal().println(colors.red("Invalid option."));
+            }
+            if (repeat) consoleUtils.pause(textIO);
+        }
     }
 
 
@@ -151,6 +182,8 @@ public class InventoryConsole {
         }
 
     }
+
+
 
     private void createSupplier(TextIO textIO) {
         System.out.print(colors.blue("\n Create Supplier \n"));
