@@ -76,23 +76,21 @@ public class UserConsole {
 
         String name = textIO.newStringInputReader()
                 .withValueChecker( (value, item) -> {
-                    System.out.println("Name: "+  " value: " + value);
                     if ( value == null || value.isBlank() ) {
                         throw new IllegalArgumentException("Name cannot by empty");
                     }
                     return Collections.emptyList();
                 })
-                .read("Name: ");
+                .read(colors.yellowLight("Name: "));
 
         String username = textIO.newStringInputReader()
                 .withValueChecker( (value, item) -> {
-                    System.out.println("Username: "+  " value: " + value);
                     if ( value == null || value.isBlank() ) {
                         throw new IllegalArgumentException("Username cannot by empty");
                     }
                     return Collections.emptyList();
                 })
-                .read("Username: ");
+                .read(colors.yellowLight("Username: "));
 
 
         String password = textIO.newStringInputReader()
@@ -102,12 +100,12 @@ public class UserConsole {
                     }
                     return Collections.emptyList();
                 })
-                .read("Password: ");
+                .read(colors.yellowLight("Password: "));
 
 
         String role = textIO.newStringInputReader()
                 .withPossibleValues("ADMIN","SELLER")
-                .read("Role: ");
+                .read(colors.yellowLight("Role: "));
 
         String passwordHash = passwordEncoder.encode(password);
 
@@ -131,7 +129,7 @@ public class UserConsole {
 
         Integer id = textIO.newIntInputReader()
                 .withMinVal(1)
-                .read("User Id: ");
+                .read(colors.yellowLight("User Id: "));
 
         try {
             UserResponse user = userService.getUserById(id);
@@ -180,19 +178,20 @@ public class UserConsole {
                     }
                     return Collections.emptyList();
                 })
-                .read("Username: ");
+                .read(colors.yellowLight("Username: "));
 
         try {
             UserResponse currentUser = userService.getUserByName(existUsername);
 
-            System.out.println( colors.yellow("\nCurrent user:") ); printUser(currentUser);
+            System.out.println( colors.yellow("\nCurrent user:") );
+            printUser(currentUser);
 
-            String name = textIO.newStringInputReader() .read( "Name [" + currentUser.name() + "]: " );
+            String name = textIO.newStringInputReader() .read( colors.yellowLight("Name [" + currentUser.name() + "]: ") );
 
-            String username = textIO.newStringInputReader() .read( "Username [" + currentUser.username() + "]: " );
+            String username = textIO.newStringInputReader() .read( colors.yellowLight("Username [" + currentUser.username() + "]: ") );
 
-            String role = textIO.newStringInputReader() .withPossibleValues("ADMIN", "SELLER") .read( "Role [" + currentUser.role() + "]: " );
-            Boolean active = textIO.newBooleanInputReader() .read( "Active [" + currentUser.active() + "]: " );
+            String role = textIO.newStringInputReader() .withPossibleValues("ADMIN", "SELLER") .read( colors.yellowLight("Role [" + currentUser.role() + "]: ") );
+            Boolean active = textIO.newBooleanInputReader() .read( colors.yellowLight("Active [" + currentUser.active() + "]: ") );
 
             if(currentUser.username().equalsIgnoreCase(username)) {
                 throw new IllegalArgumentException(colors.orange("Username already exists."));
@@ -219,7 +218,7 @@ public class UserConsole {
         System.out.print(colors.blue("\n Delete User \n"));
 
         String existUsername = textIO.newStringInputReader()
-                .read("Username: ");
+                .read(colors.yellowLight("Username: "));
 
         try {
 

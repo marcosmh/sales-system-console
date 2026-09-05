@@ -24,6 +24,11 @@ public class ConsoleColors {
     public static final String PINK = "\u001B[38;5;218m";
     public static final String PINK_LIGHT = "\u001B[38;5;198m";
     public static final String WHITE = "\u001B[37m";
+    public static final String BLUE_PASTEL = "\u001B[38;5;153m";
+    public static final String BLUE_LIGHT = "\u001B[38;2;173;216;230m";
+    public static final String BLUE_LIGHT_BABY = "\u001B[38;2;137;207;240m";
+    public static final String YELLOW_LIGHT = "\u001B[38;5;229m";
+    public static final String RED_LIGHT = "\u001B[38;5;210m";
 
     // Methods for brilliant colors
     public static final String BRIGHT_BLACK = "\u001B[90m";
@@ -70,6 +75,26 @@ public class ConsoleColors {
 
     public static String pinkLight(String text) {
         return PINK_LIGHT + text + RESET;
+    }
+
+    public static String bluePastel(String text) {
+        return BLUE_PASTEL + text + RESET;
+    }
+
+    public static String blueLight(String text) {
+        return BLUE_LIGHT + text + RESET;
+    }
+
+    public static String blueLightBaby(String text) {
+        return BLUE_LIGHT_BABY + text + RESET;
+    }
+
+    public static String yellowLight(String text) {
+        return YELLOW_LIGHT + text + RESET;
+    }
+
+    public static String redLight(String text) {
+        return RED_LIGHT + text + RESET;
     }
 
     public static String orange(String text) {

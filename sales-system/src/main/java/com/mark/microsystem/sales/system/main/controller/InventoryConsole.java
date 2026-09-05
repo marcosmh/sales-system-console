@@ -73,8 +73,8 @@ public class InventoryConsole {
 
 
     private void createProduct(TextIO textIO) {
-        //System.out.print(colors.blue("\n Create Product \n"));
-        textIO.getTextTerminal().println(colors.blue("\n=== Create Product ==="));
+
+        System.out.print(colors.blue("\n === Create Product === \n"));
 
         String name = textIO.newStringInputReader()
                 .withValueChecker( (value, item) -> {
@@ -83,7 +83,7 @@ public class InventoryConsole {
                     }
                     return Collections.emptyList();
                 })
-                .read("Name: ");
+                .read( colors.yellowLight("Name: "));
 
         String description = textIO.newStringInputReader()
                 .withValueChecker( (value, item) -> {
@@ -92,7 +92,7 @@ public class InventoryConsole {
                     }
                     return Collections.emptyList();
                 })
-                .read("Description: ");
+                .read(colors.yellowLight("Description: "));
 
         BigDecimal price = new BigDecimal(textIO.newStringInputReader()
                 .withMinLength(1)
@@ -102,15 +102,15 @@ public class InventoryConsole {
                     }
                     return Collections.emptyList();
                 })
-                .read("Price: "));
+                .read(colors.yellowLight("Price: ")));
 
         Integer stock = textIO.newIntInputReader()
                 .withMinVal(0)
-                .read("Stock: ");
+                .read(colors.yellowLight("Stock: "));
 
         Integer supplierId = textIO.newIntInputReader()
                 .withMinVal(1)
-                .read("Supplier Id ");
+                .read(colors.yellowLight("Supplier Id "));
 
         ProductCreateRequest productReq = new ProductCreateRequest(name, description, price, stock, supplierId);
 
@@ -129,6 +129,7 @@ public class InventoryConsole {
 
     private void createSupplier(TextIO textIO) {
         System.out.print(colors.blue("\n Create Supplier \n"));
+        
 
     }
 
@@ -149,10 +150,8 @@ public class InventoryConsole {
 
         System.out.println( colors.cyan( String.format( "%-5s %-25s %-20s %-10s %-10s", "ID", "NAME", "PRICE", "STOCK", "SUPPLIER" )));
         System.out.println( colors.cyan( "--------------------------------------------------------------------------" ) );
-        System.out.printf(  colors.yellow("%-5s %-25s %-20s %-10s %-10s%n"),  product.id(), product.name(), product.price(), product.stock(), product.supplier().name());
+        System.out.printf(  colors.pinkLight("%-5s %-25s %-20s %-10s %-10s%n"),  product.id(), product.name(), product.price(), product.stock(), product.supplier().name());
 
-        System.out.printf(  colors.pink("XXXXXX"));
-        System.out.printf(  colors.pinkLight("ZZZZZ"));
     }
 
     private void showSupplier(TextIO textIO, SupplierResponse supplier) {
@@ -161,7 +160,7 @@ public class InventoryConsole {
         System.out.println( colors.cyan( String.format( "%-5s %-25s %-20s %-10s %-10s",
                 "ID", "NAME", "CONTACT", "PHONE", "EMAIL" )));
         System.out.println( colors.cyan( "--------------------------------------------------------------------------" ) );
-        System.out.printf(  colors.yellow("%-5s %-25s %-20s %-10s %-10s%n"),
+        System.out.printf(  colors.pinkLight("%-5s %-25s %-20s %-10s %-10s%n"),
                 supplier.id(), supplier.name(), supplier.contact(), supplier.phone(), supplier.email());
 
     }
