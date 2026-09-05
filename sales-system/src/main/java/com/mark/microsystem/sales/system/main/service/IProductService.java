@@ -22,5 +22,9 @@ public interface IProductService {
 
     ProductResponse findByNameAndDescription(String name, String description);
 
+    ProductResponse findByName(String name);
+
+    ProductResponse findByNameAndSupplier(String name, Integer idSupplier);
+
 
 }

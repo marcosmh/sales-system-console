@@ -116,6 +116,24 @@ public class ProductService implements IProductService {
         return toResponseProduct(product);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public ProductResponse findByName(String name) {
+        Product product = productRepository.findByName(name)
+                .orElseThrow( () ->
+                        new ResourceNotFoundException("Product not found.") );
+        return toResponseProduct(product);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProductResponse findByNameAndSupplier(String name, Integer idSupplier) {
+        Product product = productRepository.findByNameAndSupplier(name, idSupplier)
+                .orElseThrow( () ->
+                        new ResourceNotFoundException("Product not found.") );
+        return toResponseProduct(product);
+    }
+
     private ProductResponse toResponseProduct(Product product) {
 
         Supplier supplier = product.getSupplier();
