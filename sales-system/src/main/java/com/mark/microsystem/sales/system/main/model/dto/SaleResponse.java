@@ -2,17 +2,18 @@ package com.mark.microsystem.sales.system.main.model.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record SaleResponse(
         Integer id,
 
-        //UserSummaryResponse user,
+        UserSummaryResponse user,
 
         LocalDateTime date,
 
         BigDecimal total,
 
-        //List<SaleDetailResponse> details,
+        List<SaleDetailResponse> details,
 
         LocalDateTime createdAt,
 

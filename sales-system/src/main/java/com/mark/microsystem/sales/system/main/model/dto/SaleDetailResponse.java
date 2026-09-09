@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public record SaleDetailResponse(
         Integer id,
 
-        //ProductSummaryResponse product,
+        ProductSummaryResponse product,
 
         Integer quantity,
 

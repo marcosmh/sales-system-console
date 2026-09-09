@@ -2,6 +2,7 @@ package com.mark.microsystem.sales.system.main.menu;
 
 import com.mark.microsystem.sales.system.main.controller.InventoryConsole;
 import com.mark.microsystem.sales.system.main.controller.LoginConsole;
+import com.mark.microsystem.sales.system.main.controller.SaleConsole;
 import com.mark.microsystem.sales.system.main.controller.UserConsole;
 import com.mark.microsystem.sales.system.main.model.entity.UserPerson;
 import com.mark.microsystem.sales.system.main.utils.ConsoleColors;
@@ -13,17 +14,19 @@ public class MainMenu {
     private final LoginConsole loginConsole;
     private final UserConsole userConsole;
     private final InventoryConsole inventoryConsole;
+    private final SaleConsole saleConsole;
 
     private final ConsoleColors colors;
     private final ConsoleUtils consoleUtils;
 
 
     public MainMenu(LoginConsole loginConsole, UserConsole userConsole,
-                    InventoryConsole inventoryConsole,
+                    InventoryConsole inventoryConsole, SaleConsole saleConsole,
                     ConsoleColors colors, ConsoleUtils consoleUtils) {
         this.loginConsole = loginConsole;
         this.userConsole = userConsole;
         this.inventoryConsole = inventoryConsole;
+        this.saleConsole = saleConsole;
         this.colors = colors;
         this.consoleUtils = consoleUtils;
     }
@@ -35,14 +38,14 @@ public class MainMenu {
             textIO.getTextTerminal().println(colors.cyan("=== SALES SYSTEM ==="));
 
             if (user.getRole().equalsIgnoreCase("ADMIN")) {
-                showAdminMenu(textIO);
+                showAdminMenu(user, textIO);
             } else {
-                showSellerMenu(textIO);
+                showSellerMenu(user,textIO);
             }
         }
     }
 
-    private void showAdminMenu(TextIO textIO) {
+    private void showAdminMenu(UserPerson user, TextIO textIO) {
         int option = textIO.newIntInputReader()
                 .withMinVal(1)
                 .withMaxVal(7)
@@ -63,6 +66,7 @@ public class MainMenu {
                 inventoryConsole.menuInventory();
                 break;
             case 3: // Sales
+                saleConsole.menuSales(user);
                 break;
             case 4: // Cash Reconciliation
                 break;
@@ -79,7 +83,7 @@ public class MainMenu {
         }
     }
 
-    private void showSellerMenu(TextIO textIO) {
+    private void showSellerMenu(UserPerson user, TextIO textIO) {
         int option = textIO.newIntInputReader()
                 .withMinVal(1)
                 .withMaxVal(4)

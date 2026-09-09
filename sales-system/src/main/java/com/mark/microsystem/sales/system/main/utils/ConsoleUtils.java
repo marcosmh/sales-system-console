@@ -3,6 +3,7 @@ package com.mark.microsystem.sales.system.main.utils;
 import org.beryx.textio.TextIO;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 public class ConsoleUtils {
 
@@ -36,6 +37,14 @@ public class ConsoleUtils {
         } catch (IOException e) {
             Thread.currentThread().interrupt();
         }
+    }
+
+    public String formatMoney(BigDecimal amount) {
+        if(amount == null) {
+            return "0.00";
+        }
+
+        return amount.setScale(2).toString();
     }
 
 
