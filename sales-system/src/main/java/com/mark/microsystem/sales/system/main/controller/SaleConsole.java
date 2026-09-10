@@ -73,7 +73,8 @@ public class SaleConsole {
         System.out.println( colors.cyan( "--------------------------------------------------------------------------" ) );
         for (SaleDetailResponse detail : sale.details()) {
             ProductSummaryResponse product = detail.product();
-            System.out.println( colors.cyan( product.name() +" x " + detail.quantity() + " = $ " )
+            System.out.println( colors.cyan( product.name() + " [ " + product.price() +" ] "
+                    + " x " + detail.quantity() + " = $ " )
                     + colors.pinkLight( consoleUtils.formatMoney(sale.total() )) );
         }
         System.out.println( colors.cyan( "--------------------------------------------------------------------------" ) );
