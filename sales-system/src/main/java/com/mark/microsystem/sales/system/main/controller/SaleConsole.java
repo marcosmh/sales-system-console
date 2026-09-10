@@ -24,12 +24,11 @@ public class SaleConsole {
         public void menuSales(UserPerson user) {
         consoleUtils.clearScreen();
         TextIO textIO = TextIoFactory.getTextIO();
-        boolean repeat = true;
 
         System.out.println( colors.green( "\nSales Record" ) );
         List<SaleDetailCreateRequest> details = new ArrayList<>();
 
-        while(repeat) {
+        while(true) {
             consoleUtils.clearScreen();
 
             Integer productId = textIO.newIntInputReader()
@@ -44,11 +43,8 @@ public class SaleConsole {
                     .withMinVal(1)
                     .read(colors.yellowLight("Quantity: "));
 
-
             details.add( new SaleDetailCreateRequest(productId, quantity) );
-            repeat = false;
 
-            if (repeat) consoleUtils.pause(textIO);
         }
 
         if(details.isEmpty()) {
