@@ -68,7 +68,7 @@ public class SaleService implements ISaleService {
 
         Sale savedSale = saleRepository.save(sale);
 
-        return null;
+        return toSaleResponse(savedSale);
     }
 
     private void validateStock(Product product, Integer quantity) {

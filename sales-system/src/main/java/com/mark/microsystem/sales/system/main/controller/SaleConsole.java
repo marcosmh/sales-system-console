@@ -21,7 +21,7 @@ public class SaleConsole {
     private final ConsoleColors colors = new ConsoleColors();
     private final ConsoleUtils consoleUtils = new ConsoleUtils(colors);
 
-    public void menuSales(UserPerson user) {
+        public void menuSales(UserPerson user) {
         consoleUtils.clearScreen();
         TextIO textIO = TextIoFactory.getTextIO();
         boolean repeat = true;
@@ -34,7 +34,7 @@ public class SaleConsole {
 
             Integer productId = textIO.newIntInputReader()
                     .withMinVal(0)
-                    .read(colors.yellowLight("Product ID (O to finish): "));
+                    .read(colors.yellowLight("Product ID (O to finish): ") );
 
             if(productId == 0) {
                 break;
@@ -46,8 +46,12 @@ public class SaleConsole {
 
 
             details.add( new SaleDetailCreateRequest(productId, quantity) );
+            repeat = false;
 
+            if (repeat) consoleUtils.pause(textIO);
         }
+
+
 
         if(details.isEmpty()) {
             System.out.println( colors.orange( "\nNo products were added to the sale." ) );
@@ -58,15 +62,12 @@ public class SaleConsole {
         SaleCreateRequest request = new SaleCreateRequest(user.getId(), details);
 
         try {
-
             SaleResponse sale = saleService.createSale(request);
-            consoleUtils.clearScreen();
-            printReceipt(sale);
-            System.out.println("*****************************");
-            printReceipt2(sale,textIO);
+            printReceipt2(sale, textIO);
             consoleUtils.pause(textIO);
         } catch(RuntimeException e) {
-            System.out.println( colors.red( "\nError creating sale: "  + e.getMessage()) );
+            System.out.println( colors.red( "\nError creating sale: \n"  + e.getMessage()) +"\n"+ e.getStackTrace() );
+            consoleUtils.pause(textIO);
         }
     }
 
@@ -93,60 +94,19 @@ public class SaleConsole {
     }
 
     private void printReceipt2(SaleResponse sale, TextIO textIO) {
-
-        textIO.getTextTerminal().println(
-                colors.green("=== SALES RECEIPT ===")
-        );
-
-        textIO.getTextTerminal().println(
-                "Sale ID: " + sale.id()
-        );
-
-        textIO.getTextTerminal().println(
-                "Date: " + sale.date()
-        );
-
-        textIO.getTextTerminal().println(
-                "Seller: " + sale.user().username()
-        );
-
-        textIO.getTextTerminal().println(
-                "----------------------------------------"
-        );
-
+        System.out.println( colors.green( "\nSales Receipt " ));
+        System.out.println( colors.cyan( "\nSale ID: " ) + colors.pinkLight( String.valueOf(sale.id())) );
+        System.out.println( colors.cyan( "\nDate: " ) + colors.pinkLight( String.valueOf(sale.date())) );
+        System.out.println( colors.cyan( "\nSeller: " ) + colors.pinkLight( String.valueOf(sale.user().username() )) );
+        System.out.println( colors.cyan( "--------------------------------------------------------------------------" ) );
         for (SaleDetailResponse detail : sale.details()) {
-
-            ProductSummaryResponse product =
-                    detail.product();
-
-            textIO.getTextTerminal().println(
-                    product.name()
-                            + " x"
-                            + detail.quantity()
-                            + " = $"
-                            + consoleUtils.formatMoney(detail.subtotal())
-            );
+            ProductSummaryResponse product = detail.product();
+            System.out.println( colors.cyan( product.name() +" x " + detail.quantity() + " = $ " )
+                    + colors.pinkLight( consoleUtils.formatMoney(sale.total() )) );
         }
-
-        textIO.getTextTerminal().println(
-                "----------------------------------------"
-        );
-
-        textIO.getTextTerminal().println(
-                colors.green(
-                        "TOTAL: $"
-                                + consoleUtils.formatMoney(sale.total())
-                )
-        );
-
+        System.out.println( colors.cyan( "--------------------------------------------------------------------------" ) );
+        System.out.println( colors.cyan( "\nTOTAL: $ " ) + colors.pinkLight( consoleUtils.formatMoney(sale.total() )) );
 
     }
-
-
-
-
-
-
-
 
 }
